@@ -9,7 +9,7 @@ public class Room
     public RoomType RoomType { get; set; }
     public int AdultCapacity { get; set; }
     public int ChildrenCapacity { get; set; }
-    public decimal PricePerNight { get; set; }
+    public decimal PricePerNight { get; set; } // 18 digits . 2 digits
     public bool IsAvailable { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
