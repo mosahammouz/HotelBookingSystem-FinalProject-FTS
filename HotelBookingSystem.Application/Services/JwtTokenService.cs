@@ -17,23 +17,22 @@ public class JwtTokenService : IJwtTokenService
     }
 
     public string GenerateToken(User user)
-    {
-        var claims = new[]
+    {    //JWT => header.payload.signature
+        var claims = new[] // info about user will be transmitted inside the token's payload
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);//“Use this key and this algorithm when signing the JWT.”
 
         var token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(
-                _jwtSettings.ExpirationMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
