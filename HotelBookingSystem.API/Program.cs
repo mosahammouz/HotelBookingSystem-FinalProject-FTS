@@ -1,5 +1,6 @@
 using System.Text;
 using HotelBookingSystem.Application.Configuration;
+using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(options => // It's Scoped by default
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// JWT settings
-var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container
 
 // JWT authentication

@@ -28,7 +28,7 @@ public class JwtTokenService : IJwtTokenService
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);//“Use this key and this algorithm when signing the JWT.”
 
-        var token = new JwtSecurityToken(
+        var token = new JwtSecurityToken( // will create the signature
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
