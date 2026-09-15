@@ -19,16 +19,16 @@ public class CitiesController : ControllerBase
     public async Task<IActionResult> GetAllCities()
     {
         var cities = await _cityService.GetAllAsync();
-        return Ok(cities);
+        return Ok(cities); // cities is IEnumerable<CityResponse> this type is dto
     }
     
     
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}")] // api/cities/4
     public async Task<IActionResult> GetCityById(int id)
     {
         var city = await _cityService.GetByIdAsync(id);
         if (city == null) { return NotFound("City not found."); }
-        return Ok(city);
+        return Ok(city);//  cities is IEnumerable<CityResponse> this type is dto
     }
     
     

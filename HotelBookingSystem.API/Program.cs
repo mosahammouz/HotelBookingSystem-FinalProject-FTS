@@ -19,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options => // It's Scoped by default
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<ICityRepository, CityRepository>();
 builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IHotelService, HotelService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container
