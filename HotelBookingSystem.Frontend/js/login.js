@@ -28,7 +28,7 @@ loginForm.addEventListener("submit", async function (event) {
 
         localStorage.setItem("token", data.token);
 
-        window.location.href = "index.html";
+        window.location.href = "home.html";
     }
     catch (error) {
         errorMessage.textContent = "Unable to connect to the server.";
