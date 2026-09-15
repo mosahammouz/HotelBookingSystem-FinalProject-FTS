@@ -1,7 +1,9 @@
 using System.Text;
 using HotelBookingSystem.Application.Configuration;
 using HotelBookingSystem.Application.Services;
+using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Infrastructure.Persistence;
+using HotelBookingSystem.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options => // It's Scoped by default
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<ICityService, CityService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container

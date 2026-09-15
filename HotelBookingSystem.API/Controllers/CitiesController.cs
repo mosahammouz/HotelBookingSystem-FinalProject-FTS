@@ -1,8 +1,7 @@
-using HotelBookingSystem.Domain.Entities;
-using HotelBookingSystem.Infrastructure.Persistence;
+using HotelBookingSystem.Application.DTOs.Cities;
+using HotelBookingSystem.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HotelBookingSystem.API.Controllers;
 
@@ -10,68 +9,54 @@ namespace HotelBookingSystem.API.Controllers;
 [Route("api/[controller]")]
 public class CitiesController : ControllerBase
 {
-    private readonly AppDbContext _dbContext;
-    public CitiesController(AppDbContext dbContext)
+    private readonly ICityService _cityService;
+    public CitiesController(ICityService cityService)
     {
-        _dbContext = dbContext;
+        _cityService = cityService;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllCities()
     {
-        var cities = await _dbContext.Cities.AsNoTracking().ToListAsync();
+        var cities = await _cityService.GetAllAsync();
         return Ok(cities);
     }
-
+    
+    
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetCityById(int id)
     {
-        var existingCity = await _dbContext.Cities.FirstOrDefaultAsync(c => c.Id == id);
-        if (existingCity == null) return NotFound("City Not Found");
-        return Ok(existingCity);
+        var city = await _cityService.GetByIdAsync(id);
+        if (city == null) { return NotFound("City not found."); }
+        return Ok(city);
     }
-
+    
+    
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<IActionResult> CreateCity(City city)
-    { 
-        _dbContext.Cities.Add(city);
-        await _dbContext.SaveChangesAsync();
+    public async Task<IActionResult> CreateCity(CreateCityRequest request)
+    {
+        var city = await _cityService.CreateAsync(request);
         return CreatedAtAction(nameof(GetCityById), new { id = city.Id }, city);
     }
     
+    
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateCity(int id, City updatedCity)
+    public async Task<IActionResult> UpdateCity(int id, UpdateCityRequest request)
     {
-        var city = await _dbContext.Cities.FindAsync(id);
-        if (city == null)
-        {
-            return NotFound("City not found.");
-        }
-
-        city.Name = updatedCity.Name;
-        city.Country = updatedCity.Country;
-        city.PostOffice = updatedCity.PostOffice;
-        city.UpdatedAt = DateTime.UtcNow;
-
-        await _dbContext.SaveChangesAsync();
-
+        var city = await _cityService.UpdateAsync(id, request);
+        if (city == null) { return NotFound("City not found."); }
         return Ok(city);
     }
-
+    
+    
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteCity(int id)
     {
-        var city = await _dbContext.Cities.FindAsync(id);
-        if (city == null)
-        {
-            return NotFound("City not found.");
-        }
-
-        _dbContext.Cities.Remove(city);
-        await _dbContext.SaveChangesAsync();
+        var deleted = await _cityService.DeleteAsync(id);
+        if (!deleted) {return NotFound("City not found."); }
         return NoContent();
     }
 
