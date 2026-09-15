@@ -15,6 +15,16 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => // It's Scoped by default
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<ICityRepository, CityRepository>();
@@ -53,7 +63,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
+app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
