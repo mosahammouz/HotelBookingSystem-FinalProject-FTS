@@ -38,15 +38,15 @@ public class HomeRepository : IHomeRepository
             .ToListAsync();
     }
 
-    public async Task<List<TrendingCityResult>> GetTrendingCitiesAsync()
+    public async Task<List<TrendingCityResult>> GetTrendingCitiesAsync() // return the most 5 
     {
         var results = await _dbContext.RecentlyVisitedHotels
-            .GroupBy(r => new
+            .GroupBy(r => new // anonymous object
             {
                 r.Hotel.CityId,
                 CityName = r.Hotel.City.Name
             })
-            .OrderByDescending(g => g.Count())
+            .OrderByDescending(g => g.Count()) // g is one group
             .Take(5)
             .Select(g => new
             {
