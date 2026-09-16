@@ -33,7 +33,7 @@ public class HotelsController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<IActionResult> CreateHotel(CreateHotelRequest request)
+    public async Task<IActionResult> CreateHotel(CreateHotelRequest request)//automatically deserializes the JSON body into that C# object.
     {
         var hotel = await _hotelService.CreateAsync(request);
 
