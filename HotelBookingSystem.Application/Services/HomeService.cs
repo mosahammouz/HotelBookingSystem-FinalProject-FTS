@@ -59,6 +59,7 @@ public class HomeService : IHomeService
             CityName = result.City.Name,
 
             Thumbnail = result.City.Hotels
+                .OrderByDescending(h => h.StarRating) // top most rated hotel thumbnail
                 .SelectMany(h => h.Images)
                 .Select(i => i.ImageUrl)
                 .FirstOrDefault(),
