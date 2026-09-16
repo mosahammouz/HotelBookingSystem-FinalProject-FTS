@@ -4,7 +4,7 @@
 
 This project follows **Clean Architecture** to maintain separation of concerns, improve testability, and make the system easier to maintain and extend.
 
-![clean architecture.jpeg](HotelBookingSystem.API/Images/clean%20architecture.jpeg)
+![Architecture.jpeg](HotelBookingSystem.API/Images/Architecture.jpeg)
 
 ### Database Schema
 
