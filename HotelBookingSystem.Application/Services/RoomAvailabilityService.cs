@@ -13,18 +13,25 @@ public class RoomAvailabilityService : IRoomAvailabilityService
         _roomAvailabilityRepository = roomAvailabilityRepository;
     }
 
-    public async Task<List<AvailableRoom>> GetAvailableRoomsAsync(int hotelId, DateTime checkInDate, DateTime checkOutDate)
+    public async Task<List<AvailableRoom>> GetAvailableRoomsAsync(
+        RoomAvailabilityRequest request)
     {
         var criteria = new RoomAvailabilityCriteria
         {
-            HotelId = hotelId,
-            CheckInDate = checkInDate,
-            CheckOutDate = checkOutDate
+            HotelId = request.HotelId,
+            CheckInDate = DateTime.SpecifyKind(
+                request.CheckInDate,
+                DateTimeKind.Utc),
+            CheckOutDate = DateTime.SpecifyKind(
+                request.CheckOutDate,
+                DateTimeKind.Utc)
         };
 
-        var rooms = await _roomAvailabilityRepository.GetAvailableRoomsAsync(criteria);
+        var rooms = await _roomAvailabilityRepository
+            .GetAvailableRoomsAsync(criteria);
 
-        return rooms.Select(room => new AvailableRoom {
+        return rooms.Select(room => new AvailableRoom
+        {
             RoomId = room.Id,
             RoomNumber = room.RoomNumber,
             RoomType = room.RoomType.ToString(),
