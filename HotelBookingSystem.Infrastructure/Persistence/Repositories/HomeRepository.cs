@@ -38,15 +38,35 @@ public class HomeRepository : IHomeRepository
             .ToListAsync();
     }
 
-    public async Task<List<City>> GetTrendingCitiesAsync()
+    public async Task<List<TrendingCityResult>> GetTrendingCitiesAsync()
     {
-        return await _dbContext.RecentlyVisitedHotels
-            .GroupBy(r => r.Hotel.CityId)
+        var results = await _dbContext.RecentlyVisitedHotels
+            .GroupBy(r => new
+            {
+                r.Hotel.CityId,
+                CityName = r.Hotel.City.Name
+            })
             .OrderByDescending(g => g.Count())
             .Take(5)
-            .Select(g => g.First().Hotel.City)
+            .Select(g => new
+            {
+                CityId = g.Key.CityId,
+                VisitCount = g.Count()
+            })
+            .ToListAsync();
+
+        var cityIds = results.Select(x => x.CityId).ToList();
+
+        var cities = await _dbContext.Cities
             .Include(c => c.Hotels)
             .ThenInclude(h => h.Images)
+            .Where(c => cityIds.Contains(c.Id))
             .ToListAsync();
+
+        return results.Select(result => new TrendingCityResult
+        {
+            City = cities.First(c => c.Id == result.CityId),
+            VisitCount = result.VisitCount
+        }).ToList();
     }
 }
