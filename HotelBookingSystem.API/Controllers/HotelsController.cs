@@ -57,4 +57,6 @@ public class HotelsController : ControllerBase
         if (!deleted) { return NotFound("Hotel not found."); }
         return NoContent();
     }
+    
+  
 }
