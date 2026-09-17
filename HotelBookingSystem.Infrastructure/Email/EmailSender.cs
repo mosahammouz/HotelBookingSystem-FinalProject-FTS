@@ -20,7 +20,7 @@ public class EmailSender : IEmailSender
         var smtpPort = int.Parse(_configuration["Email:SmtpPort"]!);
 
         var username = _configuration["Email:Username"];
-        var password = _configuration["Email:Password"];
+        var password = _configuration["Email:Password"]; // from User Secrets
         var fromEmail = _configuration["Email:FromEmail"];
 
         using var client = new SmtpClient(smtpHost, smtpPort)
