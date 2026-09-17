@@ -27,4 +27,16 @@ public class ConfirmationController : ControllerBase
         if (result == null) { return NotFound("Booking confirmation not found."); }
         return Ok(result);
     }
+    
+    
+    [HttpGet("{bookingId:int}/confirmation/pdf")]
+    public async Task<IActionResult> GetConfirmationPdf(int bookingId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) { return Unauthorized(); }
+        var userId = int.Parse(userIdClaim.Value);
+        var pdf = await _confirmationService.GenerateConfirmationPdfAsync(userId, bookingId);
+        if (pdf == null) { return NotFound("Booking confirmation not found."); }
+        return File(pdf, "application/pdf", $"BookingConfirmation-{bookingId}.pdf");
+    }
 }

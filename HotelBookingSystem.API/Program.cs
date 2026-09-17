@@ -4,12 +4,13 @@ using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Interfaces;
 using HotelBookingSystem.Infrastructure.Persistence;
 using HotelBookingSystem.Infrastructure.Persistence.Repositories;
+using HotelBookingSystem.Infrastructure.Third_library_services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
+using QuestPDF.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
-
+QuestPDF.Settings.License = LicenseType.Evaluation;
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options => // It's Scoped by default
@@ -41,9 +42,10 @@ builder.Services.AddScoped<IRoomAvailabilityRepository, RoomAvailabilityReposito
 builder.Services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
 builder.Services.AddScoped<ICheckoutRepository, CheckoutRepository>();
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
-builder.Services.AddScoped<IConfirmationRepository, ConfirmationRepository>();
 builder.Services.AddScoped<IConfirmationService, ConfirmationService>();
-
+builder.Services.AddScoped<IConfirmationRepository, ConfirmationRepository>();
+builder.Services.AddScoped<IConfirmationPdfService, ConfirmationPdfService>();
+builder.Services.AddScoped<IConfirmationPdfGenerator, ConfirmationPdfGenerator>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container
