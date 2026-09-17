@@ -14,7 +14,13 @@ public class CheckoutService : ICheckoutService
     }
 
     public async Task<CheckoutResponse> CheckoutAsync(int userId, CheckoutRequest request)
-    {
+    {request.CheckInDate = DateTime.SpecifyKind(
+            request.CheckInDate,
+            DateTimeKind.Utc);
+
+        request.CheckOutDate = DateTime.SpecifyKind(
+            request.CheckOutDate,
+            DateTimeKind.Utc);
         if (request.CheckOutDate <= request.CheckInDate)
         {
             throw new ArgumentException("Check-out date must be after check-in date.");

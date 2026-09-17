@@ -39,4 +39,14 @@ public class ConfirmationController : ControllerBase
         if (pdf == null) { return NotFound("Booking confirmation not found."); }
         return File(pdf, "application/pdf", $"BookingConfirmation-{bookingId}.pdf");
     }
+    
+    [HttpPost("{bookingId:int}/confirmation/email")]
+    public async Task<IActionResult> SendConfirmationEmail(int bookingId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) { return Unauthorized(); }
+        var userId = int.Parse(userIdClaim.Value);
+        await _confirmationService.SendConfirmationEmailAsync(userId, bookingId);
+        return Ok(new { message = "Confirmation email sent successfully." });
+    }
 }

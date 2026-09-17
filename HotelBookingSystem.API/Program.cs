@@ -2,6 +2,7 @@ using System.Text;
 using HotelBookingSystem.Application.Configuration;
 using HotelBookingSystem.Application.Services;
 using HotelBookingSystem.Domain.Interfaces;
+using HotelBookingSystem.Infrastructure.Email;
 using HotelBookingSystem.Infrastructure.Persistence;
 using HotelBookingSystem.Infrastructure.Persistence.Repositories;
 using HotelBookingSystem.Infrastructure.Third_library_services;
@@ -46,7 +47,9 @@ builder.Services.AddScoped<IConfirmationService, ConfirmationService>();
 builder.Services.AddScoped<IConfirmationRepository, ConfirmationRepository>();
 builder.Services.AddScoped<IConfirmationPdfService, ConfirmationPdfService>();
 builder.Services.AddScoped<IConfirmationPdfGenerator, ConfirmationPdfGenerator>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
+builder.Services.AddScoped<IConfirmationEmailService, ConfirmationEmailService>();
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container
 
