@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingSystem.Domain",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingSystem.Infrastructure", "HotelBookingSystem.Infrastructure\HotelBookingSystem.Infrastructure.csproj", "{19AFDE32-354E-4FFF-94EA-B5CCB6408CF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingSystem.Tests", "HotelBookingSystem.Tests\HotelBookingSystem.Tests.csproj", "{CFC1ADB8-F2D6-4C87-8686-C739F1CFA5E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{19AFDE32-354E-4FFF-94EA-B5CCB6408CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19AFDE32-354E-4FFF-94EA-B5CCB6408CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19AFDE32-354E-4FFF-94EA-B5CCB6408CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFC1ADB8-F2D6-4C87-8686-C739F1CFA5E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC1ADB8-F2D6-4C87-8686-C739F1CFA5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC1ADB8-F2D6-4C87-8686-C739F1CFA5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC1ADB8-F2D6-4C87-8686-C739F1CFA5E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ED5447B0-0E9B-4482-9D40-A29CED044C39} = {B60DD691-1DF9-406F-BB9E-22660007E690}
