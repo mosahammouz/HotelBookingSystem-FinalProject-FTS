@@ -6,4 +6,5 @@ public interface ICheckoutRepository
 {
     Task<bool> IsRoomAvailableAsync(int roomId, DateTime checkInDate, DateTime checkOutDate);
     Task<Booking> CreateBookingAsync(Booking booking);
+    Task<Room?> GetRoomForCheckoutAsync(int hotelId, int roomId);
 }

@@ -39,6 +39,10 @@ builder.Services.AddScoped<IHotelSearchService, HotelSearchService>();
 builder.Services.AddScoped<IHotelSearchRepository, HotelSearchRepository>();
 builder.Services.AddScoped<IRoomAvailabilityRepository, RoomAvailabilityRepository>();
 builder.Services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
+builder.Services.AddScoped<ICheckoutRepository, CheckoutRepository>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+
+
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container
 
