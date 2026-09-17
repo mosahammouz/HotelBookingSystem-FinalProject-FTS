@@ -41,6 +41,8 @@ builder.Services.AddScoped<IRoomAvailabilityRepository, RoomAvailabilityReposito
 builder.Services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
 builder.Services.AddScoped<ICheckoutRepository, CheckoutRepository>();
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+builder.Services.AddScoped<IConfirmationRepository, ConfirmationRepository>();
+builder.Services.AddScoped<IConfirmationService, ConfirmationService>();
 
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
