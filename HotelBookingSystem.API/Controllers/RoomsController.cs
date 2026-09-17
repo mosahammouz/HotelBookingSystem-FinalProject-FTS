@@ -21,7 +21,7 @@ public class RoomsController : ControllerBase
         return Ok(rooms);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}")] // from route
     public async Task<IActionResult> GetRoomById(int id)
     {
         var room = await _roomService.GetByIdAsync(id);

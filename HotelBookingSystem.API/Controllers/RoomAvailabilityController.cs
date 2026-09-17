@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HotelBookingSystem.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/hotels")]
 [Authorize]
 public class RoomAvailabilityController : ControllerBase
 {
@@ -16,8 +16,8 @@ public class RoomAvailabilityController : ControllerBase
         _roomAvailabilityService = roomAvailabilityService;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> GetAvailableRooms([FromBody] RoomAvailabilityRequest request)
+    [HttpPost("rooms/availability")]
+    public async Task<IActionResult> GetAvailableRooms([FromBody] RoomAvailabilityRequest request)  //HotelId , check-in and check-out
     {
         var result = await _roomAvailabilityService.GetAvailableRoomsAsync(request);
         return Ok(result);

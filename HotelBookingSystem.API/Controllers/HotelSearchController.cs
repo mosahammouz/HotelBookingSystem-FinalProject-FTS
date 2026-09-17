@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HotelBookingSystem.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/hotels")]
 [Authorize]
 public class HotelSearchController : ControllerBase
 {
@@ -16,7 +16,7 @@ public class HotelSearchController : ControllerBase
         _hotelSearchService = hotelSearchService;
     }
 
-    [HttpPost]
+    [HttpPost("search")] // FromBody //post ..... FromQuery // Get
     public async Task<IActionResult> Search([FromBody] HotelSearchRequest request)
     {
         var result = await _hotelSearchService.SearchAsync(request);
