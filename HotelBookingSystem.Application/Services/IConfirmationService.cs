@@ -11,4 +11,8 @@ public interface IConfirmationService
     Task<byte[]?> GenerateConfirmationPdfAsync(
         int userId,
         int bookingId);
+    
+    Task SendConfirmationEmailAsync(
+        int userId,
+        int bookingId);
 }

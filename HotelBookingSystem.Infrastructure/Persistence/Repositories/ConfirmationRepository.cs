@@ -15,6 +15,7 @@ public class ConfirmationRepository : IConfirmationRepository
     public async Task<Booking?> GetBookingForConfirmationAsync(int userId, int bookingId)
     {
         return await _dbContext.Bookings
+            .Include(b => b.User)
             .Include(b => b.BookingRooms)
             .ThenInclude(br => br.Room)
             .ThenInclude(r => r.Hotel)
