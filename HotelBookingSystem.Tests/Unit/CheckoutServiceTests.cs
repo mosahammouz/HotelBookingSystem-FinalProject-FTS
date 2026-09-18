@@ -41,25 +41,11 @@ public class CheckoutServiceTests
         };
 
         _repositoryMock.Setup(r => r.GetRoomForCheckoutAsync(1, 2)).ReturnsAsync(room);
-        _repositoryMock
-            .Setup(r => r.IsRoomAvailableAsync(
-                2,
-                It.IsAny<DateTime>(),
-                It.IsAny<DateTime>()))
-            .ReturnsAsync(true);
-
-        _repositoryMock
-            .Setup(r => r.CreateBookingAsync(It.IsAny<Booking>()))
-            .ReturnsAsync((Booking booking) =>
-            {
-                booking.Id = 1;
-                return booking;
-            });
+        _repositoryMock.Setup(r => r.IsRoomAvailableAsync(2, It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(true);
+        _repositoryMock.Setup(r => r.CreateBookingAsync(It.IsAny<Booking>())).ReturnsAsync((Booking booking) => { booking.Id = 1; return booking; });
 
         // Act
-        var result = await _checkoutService.CheckoutAsync(
-            3,
-            request);
+        var result = await _checkoutService.CheckoutAsync(3, request);
 
         // Assert
         Assert.NotNull(result);
