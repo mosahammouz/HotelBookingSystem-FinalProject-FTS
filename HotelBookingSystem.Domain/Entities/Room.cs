@@ -4,7 +4,7 @@ namespace HotelBookingSystem.Domain.Entities;
 public class Room
 {
     public int Id { get; set; }
-    public int HotelId { get; set; }
+    public int HotelId { get; set; } //FK       
     public string RoomNumber { get; set; } = string.Empty;
     public RoomType RoomType { get; set; }
     public int AdultCapacity { get; set; }
