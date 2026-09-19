@@ -2,8 +2,8 @@
 
 ### Architecture
 
-This project follows **Clean Architecture** to maintain separation of concerns, improve testability, and make the system easier to maintain and extend.
-
+This project follows **Clean Architecture** to maintain separation of concerns, improve testability, and make the system easier to maintain and extend.\
+**Note:** This is a modern clean architecture and follows the **Dependency Rule**.
 ![Architecture.jpeg](HotelBookingSystem.API/Images/Architecture.jpeg)
 
 ### Database Schema
