@@ -2,15 +2,35 @@
 
 ### Architecture
 
-This project follows **Clean Architecture** to maintain separation of concerns, improve testability, and make the system easier to maintain and extend.\
+This project follows **Clean Architecture** to maintain separation of concerns, improve testability, and make the system easier to maintain and extend.  
 **Note:** This is a modern clean architecture and follows the **Dependency Rule**.
+
 ![Architecture.jpeg](HotelBookingSystem.API/Images/Architecture.jpeg)
+
+### SOLID Principles
+
+The project strictly adheres to the SOLID principles throughout its architecture to ensure maintainability, scalability, and loose coupling:
+
+*   **Single Responsibility Principle (SRP)**
+    *   Controllers, services, repositories, and infrastructure components have clearly isolated responsibilities. Each class has only one reason to change.
+*   **Open/Closed Principle (OCP)**
+    *   Interfaces like `IEmailSender` allow for new functionality or providers to be added without modifying existing consumer code. Service registration is modularized via extension methods such as `ApplicationRegister` and `InfrastructureRegister`.
+*   **Liskov Substitution Principle (LSP)**
+    *   Implementations strictly adhere to contract expectations. For example, `EmailSender` can seamlessly substitute `IEmailSender` without altering the correctness of the application.
+*   **Interface Segregation Principle (ISP)**
+    *   Domain interfaces are finely tailored to specific domain needs (e.g., `IHotelRepository`, `IRoomRepository`, `ICheckoutService`, and `IEmailSender`) rather than using monolithic interfaces.
+*   **Dependency Inversion Principle (DIP)**
+    *   High-level application logic depends on abstractions rather than low-level concrete infrastructure modules. All dependencies are injected via ASP.NET Core's built-in Dependency Injection container.
+
+---
 
 ### Database Schema
 
 The database is designed to support hotel management, room availability, bookings, users, payments, reviews, amenities, and related booking functionality.
 
 ![Schema.jpeg](HotelBookingSystem.API/Images/Schema.jpeg)
+
+---
 
 ### Documentation
 
@@ -25,7 +45,7 @@ The database is designed to support hotel management, room availability, booking
 
 | Method | Endpoint | Auth |
 |---|---|---|
-| GET | `/api/Cities` | Customer  |
+| GET | `/api/Cities` | Customer |
 | POST | `/api/Cities` | Admin |
 | PUT | `/api/Cities/{id}` | Admin |
 | DELETE | `/api/Cities/{id}` | Admin |
@@ -34,18 +54,18 @@ The database is designed to support hotel management, room availability, booking
 
 | Method | Endpoint | Auth |
 |---|---|---|
-| GET | `/api/Hotels` | Customer  |
+| GET | `/api/Hotels` | Customer |
 | POST | `/api/Hotels` | Admin |
 | PUT | `/api/Hotels/{id}` | Admin |
 | DELETE | `/api/Hotels/{id}` | Admin |
-| POST | `/api/hotels/search` | Customer  |
-| POST | `/api/hotels/rooms/availability` | Customer  |
+| POST | `/api/hotels/search` | Customer |
+| POST | `/api/hotels/rooms/availability` | Customer |
 
 #### Rooms
 
 | Method | Endpoint | Auth |
 |---|---|---|
-| GET | `/api/Rooms` | Customer  |
+| GET | `/api/Rooms` | Customer |
 | POST | `/api/Rooms` | Admin |
 | PUT | `/api/Rooms/{id}` | Admin |
 | DELETE | `/api/Rooms/{id}` | Admin |
@@ -59,7 +79,9 @@ The database is designed to support hotel management, room availability, booking
 | GET | `/api/bookings/{bookingId}/confirmation/pdf` | Customer |
 | POST | `/api/bookings/{bookingId}/confirmation/email` | Customer |
 
-#### Key Points
+---
+
+### Key Points
 
 - **Authentication:** JWT-based authentication with role-based authorization.
 - **Roles:** Customer and Admin.

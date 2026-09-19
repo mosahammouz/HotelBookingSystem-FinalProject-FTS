@@ -5,10 +5,11 @@ using HotelBookingSystem.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Evaluation;
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 
 builder.Services.AddApplication(); // For registration purposes
 builder.Services.AddInfrastructure(builder.Configuration); // for registration purposes
