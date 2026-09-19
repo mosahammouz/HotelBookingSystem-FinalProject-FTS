@@ -1,22 +1,19 @@
 using System.Text;
 using HotelBookingSystem.Application.Configuration;
-using HotelBookingSystem.Application.Services;
-using HotelBookingSystem.Domain.Interfaces;
-using HotelBookingSystem.Infrastructure.Email;
-using HotelBookingSystem.Infrastructure.Persistence;
-using HotelBookingSystem.Infrastructure.Persistence.Repositories;
-using HotelBookingSystem.Infrastructure.Third_library_services;
+using HotelBookingSystem.Application.DependencyInjection;
+using HotelBookingSystem.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Evaluation;
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<AppDbContext>(options => // It's Scoped by default
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddApplication(); // For registration purposes
+builder.Services.AddInfrastructure(builder.Configuration); // for registration purposes
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -28,28 +25,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-builder.Services.AddScoped<ICityRepository, CityRepository>();
-builder.Services.AddScoped<ICityService, CityService>();
-builder.Services.AddScoped<IHotelRepository, HotelRepository>();
-builder.Services.AddScoped<IHotelService, HotelService>();
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<IRoomService, RoomService>();
-builder.Services.AddScoped<IHomeRepository, HomeRepository>();
-builder.Services.AddScoped<IHomeService, HomeService>();
-builder.Services.AddScoped<IHotelSearchService, HotelSearchService>();
-builder.Services.AddScoped<IHotelSearchRepository, HotelSearchRepository>();
-builder.Services.AddScoped<IRoomAvailabilityRepository, RoomAvailabilityRepository>();
-builder.Services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
-builder.Services.AddScoped<ICheckoutRepository, CheckoutRepository>();
-builder.Services.AddScoped<ICheckoutService, CheckoutService>();
-builder.Services.AddScoped<IConfirmationService, ConfirmationService>();
-builder.Services.AddScoped<IConfirmationRepository, ConfirmationRepository>();
-builder.Services.AddScoped<IConfirmationPdfService, ConfirmationPdfService>();
-builder.Services.AddScoped<IConfirmationPdfGenerator, ConfirmationPdfGenerator>();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
-
-builder.Services.AddScoped<IConfirmationEmailService, ConfirmationEmailService>();
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are missing.");
 builder.Services.AddSingleton(jwtSettings); // registering it in the DI container
 
@@ -87,6 +62,6 @@ app.MapControllers();
 app.MapGet("/", () => "Server is running ...");
 app.Run();
 
-public partial class Program
+public partial class Program  // for integration test (to boot all this file in test)
 {
 }
