@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingSystem.API.Controllers;
+// everything related to api/hotels endpoint  
+
 
 [ApiController]
 [Route("api/[controller]")]

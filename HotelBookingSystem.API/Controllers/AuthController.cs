@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBookingSystem.API.Controllers;
+// register and login controllers
+
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
