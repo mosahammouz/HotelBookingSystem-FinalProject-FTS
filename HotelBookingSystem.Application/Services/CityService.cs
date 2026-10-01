@@ -12,9 +12,9 @@ public class CityService : ICityService
         _cityRepository = cityRepository;
     }
 
-    public async Task<IEnumerable<CityResponse>> GetAllAsync()
+    public async Task<IEnumerable<CityResponse>> GetAllAsync() // business logic
     {
-        var cities = await _cityRepository.GetAllAsync();
+        var cities = await _cityRepository.GetAllAsync(); // use case
 
         return cities.Select(city => new CityResponse  // for DTO purposes
         {

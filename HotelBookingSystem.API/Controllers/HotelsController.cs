@@ -33,16 +33,16 @@ public class HotelsController : ControllerBase
         return Ok(hotel);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] // RBAC
     [HttpPost]
     public async Task<IActionResult> CreateHotel(CreateHotelRequest request)//automatically deserializes the JSON body into that C# object.
     {
         var hotel = await _hotelService.CreateAsync(request);
 
-        return CreatedAtAction(nameof(GetHotelById), new { id = hotel.Id }, hotel);
+        return CreatedAtAction(nameof(GetHotelById), new { id = hotel.Id }, hotel);// HTTP 201 Created
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]  // RBAC
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateHotel(int id, UpdateHotelRequest request)
     {

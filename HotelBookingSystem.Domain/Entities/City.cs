@@ -2,7 +2,7 @@ namespace HotelBookingSystem.Domain.Entities;
 
 public class City
 {
-    public int Id { get; set; } // for 1NF
+    public int Id { get; set; } // for 2NF
     public string Name { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
     public string PostOffice { get; set; } = string.Empty;

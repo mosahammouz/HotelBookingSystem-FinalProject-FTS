@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
             Username = request.Username,
             Email = request.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = UserRole.Customer
+            Role = UserRole.Customer // admin comes from seeding (RBAC)
         };
         _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync();

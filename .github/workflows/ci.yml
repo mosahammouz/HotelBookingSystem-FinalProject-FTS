@@ -1,0 +1,65 @@
+name: HotelBookingSystem CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.HOTEL_TEST_DB_PASSWORD }}
+          POSTGRES_DB: HotelBookingSystem_Test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      HOTEL_TEST_DB_CONNECTION: Host=localhost;Port=5432;Database=HotelBookingSystem_Test;Username=postgres;Password=${{ secrets.HOTEL_TEST_DB_PASSWORD }}
+      Jwt__Key: ${{ secrets.JWT_TEST_KEY }}
+      Jwt__Issuer: HotelBookingSystem
+      Jwt__Audience: HotelBookingSystemUsers
+      Jwt__ExpirationMinutes: 60
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore HotelBookingSystem.API/HotelBookingSystem.API.csproj
+
+      - name: Build
+        run: dotnet build HotelBookingSystem.API/HotelBookingSystem.API.csproj --no-restore --configuration Release
+
+      - name: Install Entity Framework CLI
+        run: dotnet tool install --global dotnet-ef --version 10.0.12
+
+      - name: Apply database migrations
+        run: >
+          dotnet ef database update
+          --project HotelBookingSystem.Infrastructure/HotelBookingSystem.Infrastructure.csproj
+          --startup-project HotelBookingSystem.API/HotelBookingSystem.API.csproj
+          --connection "$HOTEL_TEST_DB_CONNECTION"
+
+      - name: Run tests
+        run: dotnet test HotelBookingSystem.Tests/HotelBookingSystem.Tests.csproj --configuration Release --no-restore

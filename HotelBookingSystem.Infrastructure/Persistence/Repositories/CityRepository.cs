@@ -12,7 +12,7 @@ public class CityRepository : ICityRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<City>> GetAllAsync()
+    public async Task<IEnumerable<City>> GetAllAsync() // CRUD from/to db
     {
         // AsNoTracking improves performance for read-only operations
         return await _dbContext.Cities.AsNoTracking().ToListAsync();

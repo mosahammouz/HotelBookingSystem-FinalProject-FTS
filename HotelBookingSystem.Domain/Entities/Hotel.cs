@@ -6,7 +6,7 @@ public class Hotel
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public int StarRating { get; set; }
-    public int CityId { get; set; }
+    public int CityId { get; set; } //FK
     public int OwnerId { get; set; }
     public string Location { get; set; } = string.Empty;
     public double Latitude { get; set; }
