@@ -27,7 +27,7 @@ public class CheckoutIntegrationTests : IClassFixture<CustomWebApplicationFactor
 
         // Act
         var response = await _client.PostAsJsonAsync("/api/bookings/checkout", request);
-
+    
         // Assert
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }

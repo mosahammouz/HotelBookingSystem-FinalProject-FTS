@@ -15,7 +15,9 @@ public class CheckoutRepository : ICheckoutRepository
 
     public async Task<Room?> GetRoomForCheckoutAsync(int hotelId, int roomId)
     {
-        return await _dbContext.Rooms.FirstOrDefaultAsync(r =>
+        return await _dbContext.Rooms
+            .Include(r => r.Hotel)
+            .FirstOrDefaultAsync(r =>
                 r.Id == roomId &&
                 r.HotelId == hotelId);
     }
@@ -35,5 +37,11 @@ public class CheckoutRepository : ICheckoutRepository
         _dbContext.Bookings.Add(booking); // add to db
         await _dbContext.SaveChangesAsync();
         return booking;
+    }
+
+    public async Task<User?> GetUserAsync(int userId)
+    {
+        return await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Id == userId);
     }
 }

@@ -50,7 +50,7 @@ public class CheckoutAuthenticatedIntegrationTests : IClassFixture<CustomWebAppl
         var token = jwtService.GenerateToken(user);
 
         _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", token);
+            new AuthenticationHeaderValue("Bearer", token); // authorized 
 
         var request = new CheckoutRequest
         {

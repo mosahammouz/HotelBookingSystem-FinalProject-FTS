@@ -1,3 +1,4 @@
+using HotelBookingSystem.Application.DTOs.Booking_Confirmation;
 using HotelBookingSystem.Application.DTOs.Checkout;
 using HotelBookingSystem.Domain.Entities;
 using HotelBookingSystem.Domain.Enums;
@@ -8,9 +9,13 @@ namespace HotelBookingSystem.Application.Services;
 public class CheckoutService : ICheckoutService
 {
     private readonly ICheckoutRepository _checkoutRepository;
-    public CheckoutService(ICheckoutRepository checkoutRepository)
+    private readonly IConfirmationEmailService _confirmationEmailService;
+
+    public CheckoutService(ICheckoutRepository checkoutRepository , IConfirmationEmailService confirmationEmailService) // to achieve IOC 
     {
         _checkoutRepository = checkoutRepository;
+        _confirmationEmailService = confirmationEmailService;
+
     }
 
     public async Task<CheckoutResponse> CheckoutAsync(int userId, CheckoutRequest request)
@@ -54,7 +59,46 @@ public class CheckoutService : ICheckoutService
         });
 
         var createdBooking = await _checkoutRepository.CreateBookingAsync(booking);
+        var user = await _checkoutRepository.GetUserAsync(userId);
 
+        if (user != null)
+        {
+            var confirmation = new BookingConfirmation
+            {
+                ConfirmationNumber =
+                    createdBooking.ConfirmationNumber,
+
+                HotelName = room.Hotel.Name,
+
+                HotelAddress = room.Hotel.Location,
+
+                RoomNumber = room.RoomNumber,
+
+                RoomType =  room.RoomType.ToString(),
+
+                CheckInDate =
+                    createdBooking.CheckInDate,
+
+                CheckOutDate =
+                    createdBooking.CheckOutDate,
+
+                PricePerNight =
+                    room.PricePerNight,
+
+                TotalPrice =
+                    createdBooking.TotalPrice,
+
+                PaymentStatus = "Pending",
+
+                BookingStatus =
+                    createdBooking.Status.ToString()
+            };
+
+            await _confirmationEmailService
+                .SendBookingConfirmationEmailAsync(
+                    user.Email,
+                    confirmation);
+        }
         return new CheckoutResponse
         {
             BookingId = createdBooking.Id,

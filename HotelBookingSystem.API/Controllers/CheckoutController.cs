@@ -18,11 +18,11 @@ public class CheckoutController : ControllerBase
     }
 
     [HttpPost("checkout")]
-    public async Task<IActionResult> Checkout([FromBody] CheckoutRequest request)
+    public async Task<IActionResult> Checkout([FromBody] CheckoutRequest request)//hotelId , RoomId , in, out , paymentMethod
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-        if (userIdClaim == null) { return Unauthorized(); }
-        var userId = int.Parse(userIdClaim.Value); // cuz it comes from JWT not from body
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);//Look inside the currently authenticated user's JWT claims and find the claim that represents their ID.
+        if (userIdClaim == null) { return Unauthorized(); }// not logged in
+        var userId = int.Parse(userIdClaim.Value); // cuz it comes from JWT claims not from body
         var result = await _checkoutService.CheckoutAsync(userId, request);
         return Ok(result);
     }
